@@ -1,3 +1,8 @@
+/*
+  Project Name: Deno Preactjs
+  License: MIT
+  Created By: Lightnet
+*/
 
 /** @jsxRuntime classic */
 /** @jsx h */

@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev":"deno run -A --watch=static/,routes/ dev.js --import-map ./import_map.json",
+    "dev":"deno run -A --unstable --watch=static/,routes/ dev.js --import-map ./import_map.json ",
     "start":"deno run -A --watch=static/,routes/ webserver.js"
   },
   "importMap": "./import_map.json",

@@ -1,5 +1,6 @@
 /*
-  Project: Deno Preactjs
+  Project Name: Deno Preactjs
+  License: MIT
   Created By: Lightnet
 */
 

@@ -1,7 +1,9 @@
 /*
-  Project: Deno Preactjs
+  Project Name: Deno Preactjs
+  License: MIT
   Created By: Lightnet
 */
+
 // https://deno.land/manual/jsx_dom/jsx
 //for client
 
@@ -12,9 +14,9 @@ import { h } from "preact"
 import PageButton from "../components/PageButton.jsx";
 
 //for server
-export function handle(req){
-  return new Response("Hello, World!",{status:200,headers:{'Content-Type':'text/html'}});
-}
+//export function handle(req){
+  //return new Response("Hello, World!",{status:200,headers:{'Content-Type':'text/html'}});
+//}
 
 function App() {
   return (<div>

@@ -1,6 +1,10 @@
 /*
-  Project: Deno Preactjs
+  Project Name: Deno Preactjs
+  License: MIT
   Created By: Lightnet
+
+  Information:
+    Check for sync handler request
 */
 
 export default async function handle(req){

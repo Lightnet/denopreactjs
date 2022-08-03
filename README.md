@@ -4,6 +4,9 @@
 - Prototype
 - Testing
 
+## Require:
+- Deno https://deno.land/
+
 # Information:
   Couldn't find the transpiler for http serve from Deno. It seem outdate or remove.
 
@@ -14,6 +17,12 @@
   This is bare bone coding to keep the file small as possible. Idea base on nextjs from nodejs and fresh from deno.
 
   Note using the babel transformSync for transpiler for jsx to js for browser to read and load javascript format to render the doc html. As well the Deno transpiler config. Still testing.
+
+# Database:
+ Testing for postgresjs, postgresql
+
+## Require:
+- postgresql install.
 
 # run:
 ```

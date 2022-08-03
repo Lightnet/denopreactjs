@@ -1,16 +1,17 @@
 /*
-  Project: Deno Preactjs
+  Project Name: Deno Preactjs
+  License: MIT
   Created By: Lightnet
 */
 
 // https://humanwhocodes.com/snippets/2020/10/read-environment-variables-deno/
 // https://deno.land/manual/runtime/http_server_apis
 // https://deno.land/manual/runtime/program_lifecycle
-
-import * as path from "https://deno.land/std/path/mod.ts";
 // https://deno.land/std@0.150.0/fs
+
+//import * as path from "https://deno.land/std/path/mod.ts";
 import * as fs from "https://deno.land/std/fs/mod.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { config } from "dotenv";
 import { serve } from "$std/http/server.ts";
 //import render from "preact-render-to-string"; //component to string render to html
 //import { transformSync } from "https://esm.sh/@babel/core";
@@ -20,12 +21,15 @@ import * as babelCore from "https://esm.sh/@babel/core";
 // babel-standalone
 import * as presetReact from "https://esm.sh/@babel/preset-react";
 import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx";
+
+import {initDB} from "./libs/database.js";
+
 //import { document } from "./src/doc.js";// html doc string
 //console.log(document.toString())
-const __filename = new URL(import.meta.url).pathname;
-const __dirname = path.dirname(__filename);
-console.log(__filename)
-console.log(__dirname)
+//const __filename = new URL(import.meta.url).pathname;
+//const __dirname = path.dirname(__filename);
+//console.log(__filename)
+//console.log(__dirname)
 
 //console.log(config());
 const { 
@@ -48,7 +52,7 @@ console.log("INIT SET UP FILES...")
 
 async function loadImportModule(fileName){
   try{
-    console.log(fileName)
+    //console.log(fileName)
 		const m = await import(fileName).then(module => {
       //return {default:module.default,handler:module.handler }
       //console.log(module)
@@ -56,7 +60,7 @@ async function loadImportModule(fileName){
 		});
 		//console.log("m fun:",fileName)
 		//console.log(m.constructor.name) // check for AsyncFunction and Function tags  
-		console.log(m)
+		//console.log(m)
 		return m;
 	}catch(e){
 		console.log("ERROR HANDLE LOADING...")
@@ -70,7 +74,7 @@ const apiUrls = new Map();
 async function apiFilesNames() {
   for await (const entry of fs.walk(Deno.cwd()+"/routes/api")) {
     if(entry.path.endsWith('.js')){
-      console.log(entry.path);
+      //console.log(entry.path);
       const pageName = "/api/"+entry.name.split(".")[0];
       const pageModule = await loadImportModule("./routes/api/"+entry.name)
       apiUrls.set(pageName,{
@@ -80,7 +84,7 @@ async function apiFilesNames() {
     }
   }
 }
-apiFilesNames().then(() => console.log("API Files Done!"));
+await apiFilesNames().then(() => console.log("API Files Done!"));
 
 const routeUrls = new Map();
 // Async
@@ -88,16 +92,16 @@ async function routeFilesNames() {
   for await (const entry of fs.walk(Deno.cwd()+"/routes/")) {
     if(entry.path.endsWith('.jsx')){
       //console.log(entry)
-      console.log(entry.path);
+      //console.log(entry.path);
       const pageName = "/"+entry.name.split(".")[0];
-      console.log("pageName:", pageName)
+      //console.log("pageName:", pageName)
       //if(pageName=="/index"){//default url
         //const pageModule = await loadImportModule("file://"+entry.path)
         const pageModule = await loadImportModule("./routes/"+entry.name)
         routeUrls.set(pageName,{
           page:pageModule.default || null,
           fileName:entry.name,
-          handler: pageModule.handler || null
+          handler: pageModule.handle || null
         })
       //}else{
         //routeUrls.set(pageName,{
@@ -108,7 +112,28 @@ async function routeFilesNames() {
     }
   }
 }
-routeFilesNames().then(() => console.log("Routes Files Done!"));
+await routeFilesNames().then(() => console.log("Routes Files Done!"));
+
+function clientRouteToString(fileName,props){
+  if(!props){
+    props={};
+  }
+  return `<script type="module" nonce="n0nce">
+import { render } from "preact"
+import App from "./routes/${fileName}"
+let props = JSON.parse('${JSON.stringify(props)}')
+if(props){
+  render(App(props), document.body)
+}else{
+  render(App(), document.body)
+}
+
+let loading = document.getElementById("loading")
+if(loading){
+  loading.remove()
+}
+</script>`;
+}
 
 //BROWSER CLIENT REQUEST HANDLER
 async function fetch(req) {
@@ -148,45 +173,78 @@ async function fetch(req) {
     }
   }
 
+
+  //if(routeUrls.has(pathname)==true){
+    //console.log("FOUND PAGE!!! ", pathname)
+    //for (const [key, value] of routeUrls) {
+      //console.log(`KEY , VALUE`)
+      //console.log(`${key}: ${value}`)
+      //console.log(key)
+      //console.log(value)
+      //if(key == pathname){
+        //console.log("FOUND ROUTE: ", key)
+        //break;
+      //}
+    //}
+
+    //routeUrls.forEach((value, key) => { /* … */ 
+      //console.log("value:", value)
+      //console.log("key:", key)
+      //if(pathname == key){
+        //console.log("FOUND DDDD:", value)
+      //}
+    //})
+  //}
+
   //need more detail which is parms matches or [name].jsx
   //
   if(routeUrls.has(pathname)==true){
     //page module
     const pageModule = routeUrls.get(pathname)
-    console.log(pageModule)
+    //console.log(pageModule)
     try{
+      let pageProps={};
+
       if(pageModule.handler){//check if this is not null
+        console.log("ROUTES HANDLER")
         if(pageModule.handler.constructor.name=='Function'){//check if not sync for function
-          return pageModule.handler(req)
+          
+          const data = pageModule.handler(req);
+          console.log(data instanceof Response)
+          console.log(data)
+          if(data instanceof Response){
+            return data
+          }else{
+            pageProps = data;
+          }
         }else if (pageModule.handler.constructor.name=='AsyncFunction'){//check if sync for AsyncFunction
-          return await pageModule.handler(req);
+          //return await pageModule.handler(req);
+          const data = await pageModule.handler(req);
+          if(data instanceof Response){
+            return data
+          }else{
+            pageProps = data;
+          }
         }
       }
       //check page doc for render
-      console.log(typeof pageModule.page)
+      //console.log(typeof pageModule.page)
       if(pageModule.page){//check if this is not null
         if(pageModule.page.constructor.name==='Function'){
           //return pageModule.page(req);
 
           let textHtml = await Deno.readTextFile("./index.html");
-          textHtml=textHtml.replace('<!--CLIENT-->',`<script type="module" nonce="n0nce">
-import { render } from "preact"
-import App from "./routes/${pageModule.fileName}"
-render(App(), document.body)
-let loading = document.getElementById("loading")
-if(loading){
-  loading.remove()
-}
-          </script>`)
+          textHtml=textHtml.replace('<!--CLIENT-->', clientRouteToString(pageModule.fileName,pageProps) )
           return new Response(textHtml,{status:200,headers:{'Content-Type':'text/html'}});
         }else if(pageModule.page.constructor.name==='AsyncFunction'){
-          //return await pageModule.page(req);
+
+          let textHtml = await Deno.readTextFile("./index.html");
+          textHtml=textHtml.replace('<!--CLIENT-->', clientRouteToString(pageModule.fileName,pageProps) )
+          return new Response(textHtml,{status:200,headers:{'Content-Type':'text/html'}});
         }else{
           return new Response("Uh oh!!\n"+e.toString(), { status: 500 });    
         }
-
       }
-
     }catch(e){
       return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
     }
@@ -255,8 +313,10 @@ globalThis.addEventListener("beforeunload", handler);
 
 globalThis.addEventListener("unload", handler);
 
-globalThis.onload = (e) => {
+globalThis.onload = async (e) => {
   //console.log(`got ${e.type} event in onload function (main)`);
+  await initDB();
+
   //basic set up server or serve http
   serve(fetch,{port:port});
 };
