@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "dev":"deno run -A --watch=static/,routes/ dev.js --import-map ./import_map.json",
+    "start":"deno run -A --watch=static/,routes/ webserver.js"
+  },
+  "importMap": "./import_map.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "https://esm.sh/preact"
+  }
+}

@@ -1,0 +1,1 @@
+This is for return data and not page render if error it render doc.

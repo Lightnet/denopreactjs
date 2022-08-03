@@ -1,0 +1,19 @@
+{
+  "imports": {
+    "jsdom": "https://esm.sh/jsdom",
+    "url":"https://deno.land/std@0.150.0/node/url.ts",
+    "quill": "https://esm.sh/quill@1.3.7",
+    "$std/": "https://deno.land/std@0.150.0/",
+    "dotenv": "https://deno.land/x/dotenv@v3.2.0/mod.ts",
+    "axiod": "https://deno.land/x/axiod/mod.ts",
+    "three": "https://esm.sh/three@0.142.0",
+    "three/": "https://esm.sh/three@0.142.0/",
+    "$fresh/": "https://deno.land/x/fresh@1.0.1/",
+    "preact": "https://esm.sh/preact@10.10.0",
+    "preact/": "https://esm.sh/preact@10.10.0/",
+    "preact/jsx-runtime": "https://cdn.skypack.dev/preact/jsx-runtime?dts",
+    "preact/jsx-dev-runtime": "https://cdn.skypack.dev/preact/jsx-dev-runtime?dts",
+    "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.2.1?deps=preact@10.10.0",
+    "@babel/plugin-transform-react-jsx":"https://esm.sh/@babel/plugin-transform-react-jsx"
+  }
+}
