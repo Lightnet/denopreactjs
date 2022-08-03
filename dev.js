@@ -16,7 +16,7 @@ import { serve } from "$std/http/server.ts";
 //import { transformSync } from "https://esm.sh/@babel/core";
 import * as babelCore from "https://esm.sh/@babel/core";
 //import * as babelCore from "https://unpkg.com/@babel/standalone";
-//import * as babelEnv from "https://unpkg.com/@babel/preset-env";
+//import * as babelEnv from "https://unpkg.com/@babel/preset-env"; //not module
 // babel-standalone
 import * as presetReact from "https://esm.sh/@babel/preset-react";
 import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx";
@@ -110,7 +110,6 @@ async function routeFilesNames() {
 }
 routeFilesNames().then(() => console.log("Routes Files Done!"));
 
-
 //BROWSER CLIENT REQUEST HANDLER
 async function fetch(req) {
   const pathname = new URL(req.url).pathname;
@@ -120,21 +119,22 @@ async function fetch(req) {
     return new Response("",{status:404});  
   }
 
-  //CHECK PATH API 
+  //CHECK PATH API files
+  //this will filter out for return data else it return error
 	if(pathname.search("/api/")==0){
-    
+    //need to change the way handle url in case of params and [name].js
     if(apiUrls.has(pathname)==true){//match file name
-      const APIName = apiUrls.get(pathname);
-      console.log(APIName)
+      const APIModule = apiUrls.get(pathname);//get the api module
+      //console.log(APIModule)
 			try{
-				if(APIName.handler){
-					if(APIName.handler.constructor.name=='Function'){
+				if(APIModule.handler){//check if this is not null
+					if(APIName.handler.constructor.name=='Function'){//check if not sync for function
             console.log("Function")
-						return APIName.handler(req)
-					}else if (APIName.handler.constructor.name=='AsyncFunction'){
+						return APIModule.handler(req)
+					}else if (APIModule.handler.constructor.name=='AsyncFunction'){//check if sync for AsyncFunction
             console.log("AsyncFunction")
-						return await APIName.handler(req);
-					}else{
+						return await APIModule.handler(req);
+					}else{//if not those functions return error
 						return new Response("Uh oh!!\n", { status: 500 });	
 					}
 				}else{
@@ -143,32 +143,60 @@ async function fetch(req) {
 			}catch(e){
 				return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
 			}
-    }else{
+    }else{//check if there no api url matches and return error
       return new Response("Uh oh!!\n", { status: 500 });
     }
   }
 
-  //need more detail which is parms matches
+  //need more detail which is parms matches or [name].jsx
+  //
   if(routeUrls.has(pathname)==true){
+    //page module
     const pageModule = routeUrls.get(pathname)
     console.log(pageModule)
     try{
-      if(pageModule.handler){
-        if(pageModule.handler.constructor.name=='Function'){
+      if(pageModule.handler){//check if this is not null
+        if(pageModule.handler.constructor.name=='Function'){//check if not sync for function
           return pageModule.handler(req)
-        }else if (pageModule.handler.constructor.name=='AsyncFunction'){
+        }else if (pageModule.handler.constructor.name=='AsyncFunction'){//check if sync for AsyncFunction
           return await pageModule.handler(req);
         }
       }
       //check page doc for render
+      console.log(typeof pageModule.page)
+      if(pageModule.page){//check if this is not null
+        if(pageModule.page.constructor.name==='Function'){
+          //return pageModule.page(req);
+
+          let textHtml = await Deno.readTextFile("./index.html");
+          textHtml=textHtml.replace('<!--CLIENT-->',`<script type="module" nonce="n0nce">
+import { render } from "preact"
+import App from "./routes/${pageModule.fileName}"
+render(App(), document.body)
+let loading = document.getElementById("loading")
+if(loading){
+  loading.remove()
+}
+          </script>`)
+          return new Response(textHtml,{status:200,headers:{'Content-Type':'text/html'}});
+        }else if(pageModule.page.constructor.name==='AsyncFunction'){
+          //return await pageModule.page(req);
+        }else{
+          return new Response("Uh oh!!\n"+e.toString(), { status: 500 });    
+        }
+
+      }
 
     }catch(e){
       return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
     }
   }
 
+  //default page
+  //need to set up two type checks.
   if(pathname=='/'){
-    const textHtml = await Deno.readTextFile("./index.html");
+    let textHtml = await Deno.readTextFile("./index.html");
+    textHtml=textHtml.replace('<!--CLIENT-->','<script type="module" src="client.jsx" nonce="n0nce"></script>')
     return new Response(textHtml,{status:200,headers:{'Content-Type':'text/html'}});
     //return new Response(document.toString(),{status:200,headers:{'Content-Type':'text/html'}});
   }
@@ -189,15 +217,12 @@ async function fetch(req) {
       //const fileName = new URL("."+pathname, import.meta.url)
       //console.log("fileName: ", fileName.toString())
       //let textJSX = await Deno.readTextFile(fileName);
-      
       const CWDFilePath = "."+pathname;
       console.log("CWDFilePath: ",CWDFilePath)
       let textJSX = await Deno.readTextFile(CWDFilePath);
       //console.log(textJSX);
-      
-      textJSX = textJSX.replace('/** @jsxRuntime classic */','')
+      //textJSX = textJSX.replace('/** @jsxRuntime classic */','')
       //textJSX = textJSX.replace('/** @jsx h */','/** @jsxImportSource https://esm.sh/preact */')
-      
       //console.log(babelCore)
       result = babelCore.transformSync(textJSX, {
         "presets": [
@@ -207,7 +232,7 @@ async function fetch(req) {
         //plugins: ["@babel/plugin-transform-react-jsx"],
         "plugins": [transformReactJsx],
       });
-      console.log(result.code)
+      //console.log(result.code)
     }catch(e){
       console.log("ERROR?")
       console.log(e)
@@ -215,10 +240,11 @@ async function fetch(req) {
     return new Response(result.code,{ status:200, headers:{'Content-Type':'text/javascript'} });
     //return new Response("Hello, World!",{headers:{'Content-Type':'text/javascript'} });
   }
-
+  //if the url page is not found return simple text
   return new Response("Hello, World!",{status:200,headers:{'Content-Type':'text/html'}});
 }
 
+// this handle loading and unloading event serve
 const handler = (e) => {
   console.log(`got ${e.type} event in event handler (main)`);
 };

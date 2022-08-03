@@ -9,7 +9,7 @@
 /** @jsx h */
 
 import { h } from "preact"
-//import Button from "../components/Button.jsx";
+import PageButton from "../components/PageButton.jsx";
 
 //for server
 export function handle(req){
@@ -18,9 +18,9 @@ export function handle(req){
 
 function App() {
   return (<div>
-    
-    <label> App </label>
+    <PageButton/>  
+    <label> App Page Test!</label>
   </div>)
 }
-//<Button/>
+//
 export default App;

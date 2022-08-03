@@ -1,4 +1,7 @@
-
+/*
+  Project: Deno Preactjs
+  Created By: Lightnet
+*/
 
 import { render } from "preact"
 import App from "./App.jsx"
