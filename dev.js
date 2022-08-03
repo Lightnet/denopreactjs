@@ -15,8 +15,11 @@ import { serve } from "$std/http/server.ts";
 //import render from "preact-render-to-string"; //component to string render to html
 //import { transformSync } from "https://esm.sh/@babel/core";
 import * as babelCore from "https://esm.sh/@babel/core";
+//import * as babelCore from "https://unpkg.com/@babel/standalone";
+//import * as babelEnv from "https://unpkg.com/@babel/preset-env";
+// babel-standalone
 import * as presetReact from "https://esm.sh/@babel/preset-react";
-import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx@7.18.6";
+import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx";
 //import { document } from "./src/doc.js";// html doc string
 //console.log(document.toString())
 const __filename = new URL(import.meta.url).pathname;
@@ -31,6 +34,7 @@ const {
 , ENVIRONMENT 
 }= config();
 
+//console.log(Deno)
 //console.log("PORT: ", PORT)
 //console.log("SECRET: ", SECRET)
 //console.log("ENVIRONMENT: ", ENVIRONMENT)
@@ -41,21 +45,66 @@ console.log(port)
 console.log("Deno.cwd()")
 console.log(Deno.cwd())
 console.log("INIT SET UP FILES...")
+
+async function loadImportModule(fileName){
+  try{
+    console.log(fileName)
+		const m = await import(fileName).then(module => {
+      //return {default:module.default,handler:module.handler }
+      //console.log(module)
+      return module
+		});
+		//console.log("m fun:",fileName)
+		//console.log(m.constructor.name) // check for AsyncFunction and Function tags  
+		console.log(m)
+		return m;
+	}catch(e){
+		console.log("ERROR HANDLE LOADING...")
+		console.log(e)
+		return null;
+	}
+}
+
+const apiUrls = new Map();
 // Async
 async function apiFilesNames() {
   for await (const entry of fs.walk(Deno.cwd()+"/routes/api")) {
     if(entry.path.endsWith('.js')){
       console.log(entry.path);
+      const pageName = "/api/"+entry.name.split(".")[0];
+      const pageModule = await loadImportModule("./routes/api/"+entry.name)
+      apiUrls.set(pageName,{
+        fileName:entry.name,
+        handler: pageModule.default || null
+      })
     }
   }
 }
 apiFilesNames().then(() => console.log("API Files Done!"));
 
+const routeUrls = new Map();
 // Async
 async function routeFilesNames() {
   for await (const entry of fs.walk(Deno.cwd()+"/routes/")) {
     if(entry.path.endsWith('.jsx')){
+      //console.log(entry)
       console.log(entry.path);
+      const pageName = "/"+entry.name.split(".")[0];
+      console.log("pageName:", pageName)
+      //if(pageName=="/index"){//default url
+        //const pageModule = await loadImportModule("file://"+entry.path)
+        const pageModule = await loadImportModule("./routes/"+entry.name)
+        routeUrls.set(pageName,{
+          page:pageModule.default || null,
+          fileName:entry.name,
+          handler: pageModule.handler || null
+        })
+      //}else{
+        //routeUrls.set(pageName,{
+          //page:null,
+          //handler:null
+        //})
+      //}
     }
   }
 }
@@ -69,6 +118,53 @@ async function fetch(req) {
 
   if(pathname=='favicon.ico'){
     return new Response("",{status:404});  
+  }
+
+  //CHECK PATH API 
+	if(pathname.search("/api/")==0){
+    
+    if(apiUrls.has(pathname)==true){//match file name
+      const APIName = apiUrls.get(pathname);
+      console.log(APIName)
+			try{
+				if(APIName.handler){
+					if(APIName.handler.constructor.name=='Function'){
+            console.log("Function")
+						return APIName.handler(req)
+					}else if (APIName.handler.constructor.name=='AsyncFunction'){
+            console.log("AsyncFunction")
+						return await APIName.handler(req);
+					}else{
+						return new Response("Uh oh!!\n", { status: 500 });	
+					}
+				}else{
+					return new Response("Uh oh!!\n", { status: 500 });
+				}
+			}catch(e){
+				return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
+			}
+    }else{
+      return new Response("Uh oh!!\n", { status: 500 });
+    }
+  }
+
+  //need more detail which is parms matches
+  if(routeUrls.has(pathname)==true){
+    const pageModule = routeUrls.get(pathname)
+    console.log(pageModule)
+    try{
+      if(pageModule.handler){
+        if(pageModule.handler.constructor.name=='Function'){
+          return pageModule.handler(req)
+        }else if (pageModule.handler.constructor.name=='AsyncFunction'){
+          return await pageModule.handler(req);
+        }
+      }
+      //check page doc for render
+
+    }catch(e){
+      return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
+    }
   }
 
   if(pathname=='/'){
@@ -90,16 +186,30 @@ async function fetch(req) {
     let result = "";
     try{
       //                      "./app.js"      "file:///x:/projects/denopreactjs/dev.js"
-      const fileName = new URL("."+pathname, import.meta.url)
-      console.log("fileName: ", fileName.toString())
-      const textJSX = await Deno.readTextFile(fileName);
+      //const fileName = new URL("."+pathname, import.meta.url)
+      //console.log("fileName: ", fileName.toString())
+      //let textJSX = await Deno.readTextFile(fileName);
+      
+      const CWDFilePath = "."+pathname;
+      console.log("CWDFilePath: ",CWDFilePath)
+      let textJSX = await Deno.readTextFile(CWDFilePath);
+      //console.log(textJSX);
+      
+      textJSX = textJSX.replace('/** @jsxRuntime classic */','')
+      //textJSX = textJSX.replace('/** @jsx h */','/** @jsxImportSource https://esm.sh/preact */')
+      
+      //console.log(babelCore)
       result = babelCore.transformSync(textJSX, {
-        "presets": [presetReact],
+        "presets": [
+          //babelEnv,
+          presetReact
+        ],
         //plugins: ["@babel/plugin-transform-react-jsx"],
         "plugins": [transformReactJsx],
       });
-      //console.log(result.code)
+      console.log(result.code)
     }catch(e){
+      console.log("ERROR?")
       console.log(e)
     }
     return new Response(result.code,{ status:200, headers:{'Content-Type':'text/javascript'} });

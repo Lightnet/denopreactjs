@@ -23,6 +23,20 @@
 /** @jsxFrag Preact.Fragment */
 ```
 
+Index.jsx
+```jsx
+/** @jsxRuntime classic */
+/** @jsx h */
+import { h } from "preact"
+```
+
+- https://deno.land/manual/jsx_dom/jsx
+```jsx
+/** @jsxImportSource https://esm.sh/preact */
+```
+
+
+
 # Notes:
 - Top root by using preact/hooks will error on __h for dev build testing.
 
@@ -31,8 +45,8 @@
 - https://github.com/exhibitionist-digital/ultra/blob/master/src/server/requestHandler.ts
 - https://github.com/exhibitionist-digital/ultra
 - https://babeljs.io/docs/en/babel-preset-react
-- 
-- 
+- https://stackoverflow.com/questions/66907992/use-jsx-as-view-engine-in-oak
+- https://dev.to/samby_mahapatra/how-to-solve-pragma-and-pragmafrag-can-not-be-set-while-runtime-is-automatic-error-1i4c
 
 
 https://github.com/solidjs/solid/discussions/332

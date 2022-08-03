@@ -14,6 +14,7 @@
     "preact/jsx-runtime": "https://cdn.skypack.dev/preact/jsx-runtime?dts",
     "preact/jsx-dev-runtime": "https://cdn.skypack.dev/preact/jsx-dev-runtime?dts",
     "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.2.1?deps=preact@10.10.0",
+    "@babel/core":"https://unpkg.com/@babel/standalone",
     "@babel/plugin-transform-react-jsx":"https://esm.sh/@babel/plugin-transform-react-jsx"
   }
 }
