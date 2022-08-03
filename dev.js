@@ -34,8 +34,8 @@ import {initDB} from "./libs/database.js";
 //console.log(config());
 const { 
   PORT
-, SECRET
-, ENVIRONMENT 
+//, SECRET
+//, ENVIRONMENT 
 }= config();
 
 //console.log(Deno)
@@ -50,6 +50,7 @@ console.log("Deno.cwd()")
 console.log(Deno.cwd())
 console.log("INIT SET UP FILES...")
 
+// AWAIT IMPORT
 async function loadImportModule(fileName){
   try{
     //console.log(fileName)
@@ -147,13 +148,14 @@ async function fetch(req) {
   //CHECK PATH API files
   //this will filter out for return data else it return error
 	if(pathname.search("/api/")==0){
+    console.log("FOUND API:", pathname)
     //need to change the way handle url in case of params and [name].js
     if(apiUrls.has(pathname)==true){//match file name
       const APIModule = apiUrls.get(pathname);//get the api module
       //console.log(APIModule)
 			try{
 				if(APIModule.handler){//check if this is not null
-					if(APIName.handler.constructor.name=='Function'){//check if not sync for function
+					if(APIModule.handler.constructor.name=='Function'){//check if not sync for function
             console.log("Function")
 						return APIModule.handler(req)
 					}else if (APIModule.handler.constructor.name=='AsyncFunction'){//check if sync for AsyncFunction
@@ -259,6 +261,16 @@ async function fetch(req) {
     //return new Response(document.toString(),{status:200,headers:{'Content-Type':'text/html'}});
   }
 
+  if(pathname.endsWith('.js')){
+    try{
+      const fileNameUrl = new URL("."+pathname, import.meta.url);
+      const fileText = await Deno.readTextFile(fileNameUrl);
+      return new Response(fileText,{headers:{'Content-Type':'text/javascript'} });
+    }catch(e){
+      return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
+    }
+  }
+
   //filename.jsx
   if(pathname.endsWith('.jsx')){
     //console.log("FOUND", pathname)
@@ -277,14 +289,14 @@ async function fetch(req) {
       //let textJSX = await Deno.readTextFile(fileName);
       const CWDFilePath = "."+pathname;
       console.log("CWDFilePath: ",CWDFilePath)
-      let textJSX = await Deno.readTextFile(CWDFilePath);
+      const textJSX = await Deno.readTextFile(CWDFilePath);
       //console.log(textJSX);
       //textJSX = textJSX.replace('/** @jsxRuntime classic */','')
       //textJSX = textJSX.replace('/** @jsx h */','/** @jsxImportSource https://esm.sh/preact */')
       //console.log(babelCore)
       result = babelCore.transformSync(textJSX, {
         "presets": [
-          //babelEnv,
+          //babelEnv,//fail not module
           presetReact
         ],
         //plugins: ["@babel/plugin-transform-react-jsx"],
@@ -328,7 +340,6 @@ globalThis.onbeforeunload = (e) => {
 globalThis.onunload = (e) => {
   //console.log(`got ${e.type} event in onunload function (main)`);
 };
-
 
 /*
 async function serveHttp(conn) {

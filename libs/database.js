@@ -31,6 +31,10 @@ async function initDB(){
   }
 }
 
+function getDB(){
+  console.log("Database");
+}
+
 function closeDB(){
 
 }
@@ -60,6 +64,7 @@ function initTables(){
 
 export{
   initDB,
+  getDB,
   closeDB,
   initTables,
   sql
