@@ -97,6 +97,13 @@ render(App(), document.body)
 ```
 Entry point for app build.
 
+# .env:
+
+```
+ENVIRONMENT=development
+PORT=3000
+SECRET=32char
+```
 
 # Notes:
 - Top root by using preact/hooks will error on __h for dev build testing.
@@ -110,8 +117,4 @@ Entry point for app build.
 - https://dev.to/samby_mahapatra/how-to-solve-pragma-and-pragmafrag-can-not-be-set-while-runtime-is-automatic-error-1i4c
 - https://michaelcurrin.github.io/dev-cheatsheets/cheatsheets/javascript/deno/
 - https://deno.land/manual@v1.1.3/tools/linter
-- 
-- 
-- 
-- 
 - 

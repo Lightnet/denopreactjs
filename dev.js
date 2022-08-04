@@ -308,7 +308,7 @@ async function apiFetch(req) {
       //console.log("fileName: ", fileName.toString())
       //let textJSX = await Deno.readTextFile(fileName);
       const CWDFilePath = "."+pathname;
-      console.log("CWDFilePath: ",CWDFilePath)
+      console.log("JSX-to-JS Path: ",CWDFilePath)
       const textJSX = await Deno.readTextFile(CWDFilePath);
       //console.log(textJSX);
       //textJSX = textJSX.replace('/** @jsxRuntime classic */','')
