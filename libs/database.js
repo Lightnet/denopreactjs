@@ -8,7 +8,10 @@
 //import { DataTypes, Database, Model, PostgresConnector } from 'https://deno.land/x/denodb/mod.ts'; //fail
 //import { Client } from "https://deno.land/x/postgres@v0.16.1/mod.ts"; // p
 import postgres from 'https://deno.land/x/postgresjs/mod.js' // p
-
+import {
+  createTableUser,
+  deleteTableUser
+} from "./db/user.js"
 let db;
 
 // deno-lint-ignore require-await
@@ -45,21 +48,22 @@ const sql = postgres({ /* options */
   database: "test",
 }) // will use psql environment variables
 
-async function createTableUser(){
-  const result = await sql`CREATE TABLE IF NOT EXISTS users (id INTEGER, alias TEXT, salt TEXT, hash TEXT)`;
-  console.log("create table user result")
-  console.log(result)
-}
-
 async function createTableCharacter(){
   const result = await sql`CREATE TABLE IF NOT EXISTS character (id INTEGER, alias TEXT, salt TEXT, hash TEXT)`;
   console.log("create table user result")
   console.log(result)
 }
 
+function testTables(){
+  console.log("test table DB");
+  //createTableUser();
+  //createTableCharacter();
+  //deleteTableUser();
+}
+
 function initTables(){
-  createTableUser();
-  createTableCharacter();
+  //createTableUser();
+  //createTableCharacter();
 }
 
 export{
@@ -67,6 +71,7 @@ export{
   getDB,
   closeDB,
   initTables,
+  testTables,
   sql
 }
 

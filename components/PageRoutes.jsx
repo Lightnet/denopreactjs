@@ -7,6 +7,8 @@
     This handle url page address route view components set.
 */
 
+// deno-lint-ignore-file
+
 /** @jsx h */
 import { h } from "preact"
 import { useState, useEffect } from "preact/hooks"

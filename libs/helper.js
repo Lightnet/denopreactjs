@@ -25,5 +25,8 @@ export function sleep(ms){
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function toHexString(bytes){
+  return bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
+}
 
 

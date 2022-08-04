@@ -6,6 +6,8 @@
   browser client
 */
 
+// deno-lint-ignore-file
+
 /** @jsx h */
 import { h } from "preact"
 import { useState, useContext } from "preact/hooks"

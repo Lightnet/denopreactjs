@@ -1,5 +1,6 @@
 {
   "imports": {
+    "cookie": "https://esm.sh/cookie",
     "$std/": "https://deno.land/std@0.150.0/",
     "dotenv": "https://deno.land/x/dotenv/mod.ts",
     "axios": "https://deno.land/x/axiod/mod.ts",
@@ -7,7 +8,7 @@
     "three/": "https://esm.sh/three@0.143.0/",
     "preact": "https://esm.sh/preact@10.10.0",
     "preact/": "https://esm.sh/preact@10.10.0/",
-    "preact-router": "https://unpkg.com/preact-router@latest/dist/preact-router.module.js",
+    "preact-router": "https://unpkg.com/preact-router",
     "preact-async-route": "https://unpkg.com/preact-async-route?module",
     "preact/jsx-runtime": "https://cdn.skypack.dev/preact/jsx-runtime?dts",
     "preact/jsx-dev-runtime": "https://cdn.skypack.dev/preact/jsx-dev-runtime?dts",

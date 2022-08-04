@@ -21,8 +21,18 @@ import * as babelCore from "https://esm.sh/@babel/core";
 // babel-standalone
 import * as presetReact from "https://esm.sh/@babel/preset-react";
 import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx";
+import { crypto } from "$std/crypto/mod.ts";
+import { 
+  initDB
+, testTables 
+} from "./libs/database.js";
+import { 
+  createJWT
+, verifyJWT 
+} from "./libs/serverapi.js"
 
-import {initDB} from "./libs/database.js";
+console.log(crypto.randomUUID())
+//console.log(Deno)
 
 //import { document } from "./src/doc.js";// html doc string
 //console.log(document.toString())
@@ -137,7 +147,8 @@ if(loading){
 }
 
 //BROWSER CLIENT REQUEST HANDLER
-async function fetch(req) {
+// fetch function has build in function for deno
+async function apiFetch(req) {
   const pathname = new URL(req.url).pathname;
   //console.log("pathname",pathname);
 
@@ -316,7 +327,7 @@ async function fetch(req) {
 
 // this handle loading and unloading event serve
 const handler = (e) => {
-  console.log(`got ${e.type} event in event handler (main)`);
+  //console.log(`got ${e.type} event in event handler (main)`);
 };
 
 globalThis.addEventListener("load", handler);
@@ -329,8 +340,10 @@ globalThis.onload = async (e) => {
   //console.log(`got ${e.type} event in onload function (main)`);
   await initDB();
 
+  testTables();
+
   //basic set up server or serve http
-  serve(fetch,{port:port});
+  serve(apiFetch,{port:port});
 };
 
 globalThis.onbeforeunload = (e) => {

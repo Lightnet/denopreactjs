@@ -26,5 +26,5 @@ export default async function handler(req){
     return new Response(JSON.stringify({api:"EXIST"}),{headers:{'Content-Type':'application/json'}});
   }
 
-  return new Response(JSON.stringify({api:"ERROR"}),{headers:{'Content-Type':'application/json'}});
+  //return new Response(JSON.stringify({api:"ERROR"}),{headers:{'Content-Type':'application/json'}});
 }

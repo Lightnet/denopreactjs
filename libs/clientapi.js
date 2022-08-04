@@ -7,6 +7,7 @@
 //import axios from "https://unpkg.com/@bundled-es-modules/axios@0.27.2/index.js";
 //console.log(await import("https://unpkg.com/axios/dist/axios.min.js"))
 
+// deno-lint-ignore import-prefix-missing
 import { axios } from 'axios';
 
 const axiosapi = axios.create({

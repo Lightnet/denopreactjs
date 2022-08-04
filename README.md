@@ -108,4 +108,10 @@ Entry point for app build.
 - https://babeljs.io/docs/en/babel-preset-react
 - https://stackoverflow.com/questions/66907992/use-jsx-as-view-engine-in-oak
 - https://dev.to/samby_mahapatra/how-to-solve-pragma-and-pragmafrag-can-not-be-set-while-runtime-is-automatic-error-1i4c
-
+- https://michaelcurrin.github.io/dev-cheatsheets/cheatsheets/javascript/deno/
+- https://deno.land/manual@v1.1.3/tools/linter
+- 
+- 
+- 
+- 
+- 

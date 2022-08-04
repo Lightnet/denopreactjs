@@ -6,6 +6,8 @@
   browser client
 */
 
+// deno-lint-ignore-file
+
 /** @jsx h */
 import { h } from "preact"
 import { useState, useContext } from "preact/hooks"
@@ -35,16 +37,20 @@ export default function ELogin(){
       pass:passphrase
     }).then(response=>{
       console.log(response)
-      if(response.data?.api=="TOKEN"){
-        console.log(response.data?.api)
-        setUserInfo(response.data.user)
-        //setUser(response.data.user.alias)
-        //console.log("USER NAME",response.data.user.alias)
-        setUser(response.data.user.alias)
-        route("/",true);
-      }else{
-        console.log("LOGIN ERROR")
+      if(response.status==200){
+        //console.log(response.data?.api)
+        if(response.data?.api=="TOKEN"){
+          //console.log("USER NAME",response.data.user.alias)
+          setUserInfo(response.data.user)
+          setUser(response.data.user.alias)
+          
+          route("/",true);
+        }else{
+          console.log("LOGIN ERROR")
+        }
       }
+    }).catch(err=>{
+      console.log(err)
     })
   }
 
