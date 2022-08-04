@@ -20,14 +20,16 @@ import { ThemeContext } from "./ThemeProvider.jsx";
 export default function ToggleTheme(){
   
   const {theme, setTheme} = useContext(ThemeContext);
+  //const _theme = useContext(ThemeContext);
 
   useEffect(()=>{
-    
+    //console.log(_theme)
   },[])
 
   function switchTheme(){
     console.log("switchTheme")
     if(!window.localStorage){
+      console.log("NOT FOUND!")
       return;
     }
     
@@ -39,7 +41,6 @@ export default function ToggleTheme(){
     document.documentElement.setAttribute('data-theme', targetTheme);
     setTheme(targetTheme);
     localStorage.setItem('theme', targetTheme);
-    
   }
 
   function toggleTheme(e){

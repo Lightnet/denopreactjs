@@ -17,7 +17,7 @@ let db;
 // deno-lint-ignore require-await
 async function initDB(){
   if(!db){
-    console.log("Init DB!")
+    //console.log("Init DB!")
     //db = postgres({}) // will default to the same as psql
     /*
     db = new Client({

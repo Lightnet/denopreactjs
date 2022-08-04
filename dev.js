@@ -24,14 +24,14 @@ import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx"
 import { crypto } from "$std/crypto/mod.ts";
 import { 
   initDB
-, testTables 
+//, testTables 
 } from "./libs/database.js";
 import { 
   createJWT
 , verifyJWT 
 } from "./libs/serverapi.js"
 
-console.log(crypto.randomUUID())
+//console.log(crypto.randomUUID())
 //console.log(Deno)
 
 //import { document } from "./src/doc.js";// html doc string
@@ -54,11 +54,11 @@ const {
 //console.log("ENVIRONMENT: ", ENVIRONMENT)
 
 const port = Number(PORT) || 3000
-console.log(port)
+//console.log(port)
 // API and ROUTES
-console.log("Deno.cwd()")
-console.log(Deno.cwd())
-console.log("INIT SET UP FILES...")
+//console.log("Deno.cwd()")
+//console.log(Deno.cwd())
+//console.log("INIT SET UP FILES...")
 
 // AWAIT IMPORT
 async function loadImportModule(fileName){
@@ -186,7 +186,6 @@ async function apiFetch(req) {
     }
   }
 
-
   //if(routeUrls.has(pathname)==true){
     //console.log("FOUND PAGE!!! ", pathname)
     //for (const [key, value] of routeUrls) {
@@ -282,6 +281,16 @@ async function apiFetch(req) {
     }
   }
 
+  if(pathname.endsWith('.css')){
+    try{
+      const fileNameUrl = new URL("."+pathname, import.meta.url);
+      const fileText = await Deno.readTextFile(fileNameUrl);
+      return new Response(fileText,{headers:{'Content-Type':'text/css'} });
+    }catch(e){
+      return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
+    }
+  }
+
   //filename.jsx
   if(pathname.endsWith('.jsx')){
     //console.log("FOUND", pathname)
@@ -339,8 +348,7 @@ globalThis.addEventListener("unload", handler);
 globalThis.onload = async (e) => {
   //console.log(`got ${e.type} event in onload function (main)`);
   await initDB();
-
-  testTables();
+  //testTables();
 
   //basic set up server or serve http
   serve(apiFetch,{port:port});
