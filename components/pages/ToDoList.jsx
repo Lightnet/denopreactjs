@@ -78,7 +78,7 @@ export default function ToDoList(){
     axiosapi.request({
       //url:`/api/todolist?id=${id}`,
       url:`/api/todolist`,
-      method: 'POST',
+      method: 'DELETE',
       data: {api:"DELETE",id:id}
     })
     .then(resp=>{

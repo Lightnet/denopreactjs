@@ -12,6 +12,14 @@ import {
   createTableUser,
   deleteTableUser
 } from "./db/user.js"
+import {
+  createTableToDoList,
+  getToDoList,
+  addToDoList,
+  updateToDoList,
+  deleteToDoList
+} from "./db/todolist.js"
+
 let db;
 
 // deno-lint-ignore require-await
@@ -58,11 +66,13 @@ function testTables(){
   console.log("test table DB");
   //createTableUser();
   //createTableCharacter();
+  //createTableToDoList();
   //deleteTableUser();
 }
 
 function initTables(){
   //createTableUser();
+  createTableToDoList();
   //createTableCharacter();
 }
 

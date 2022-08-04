@@ -24,7 +24,7 @@ import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx"
 import { crypto } from "$std/crypto/mod.ts";
 import { 
   initDB
-//, testTables 
+, testTables 
 } from "./libs/database.js";
 import { 
   createJWT
@@ -159,7 +159,7 @@ async function apiFetch(req) {
   //CHECK PATH API files
   //this will filter out for return data else it return error
 	if(pathname.search("/api/")==0){
-    console.log("FOUND API:", pathname)
+    //console.log("FOUND API:", pathname)
     //need to change the way handle url in case of params and [name].js
     if(apiUrls.has(pathname)==true){//match file name
       const APIModule = apiUrls.get(pathname);//get the api module
@@ -167,10 +167,10 @@ async function apiFetch(req) {
 			try{
 				if(APIModule.handler){//check if this is not null
 					if(APIModule.handler.constructor.name=='Function'){//check if not sync for function
-            console.log("Function")
+            //console.log("Function")
 						return APIModule.handler(req)
 					}else if (APIModule.handler.constructor.name=='AsyncFunction'){//check if sync for AsyncFunction
-            console.log("AsyncFunction")
+            //console.log("AsyncFunction")
 						return await APIModule.handler(req);
 					}else{//if not those functions return error
 						return new Response("Uh oh!!\n", { status: 500 });	
@@ -186,28 +186,6 @@ async function apiFetch(req) {
     }
   }
 
-  //if(routeUrls.has(pathname)==true){
-    //console.log("FOUND PAGE!!! ", pathname)
-    //for (const [key, value] of routeUrls) {
-      //console.log(`KEY , VALUE`)
-      //console.log(`${key}: ${value}`)
-      //console.log(key)
-      //console.log(value)
-      //if(key == pathname){
-        //console.log("FOUND ROUTE: ", key)
-        //break;
-      //}
-    //}
-
-    //routeUrls.forEach((value, key) => { /* … */ 
-      //console.log("value:", value)
-      //console.log("key:", key)
-      //if(pathname == key){
-        //console.log("FOUND DDDD:", value)
-      //}
-    //})
-  //}
-
   //need more detail which is parms matches or [name].jsx
   //
   if(routeUrls.has(pathname)==true){
@@ -216,7 +194,6 @@ async function apiFetch(req) {
     //console.log(pageModule)
     try{
       let pageProps={};
-
       if(pageModule.handler){//check if this is not null
         console.log("ROUTES HANDLER")
         if(pageModule.handler.constructor.name=='Function'){//check if not sync for function
@@ -301,20 +278,20 @@ async function apiFetch(req) {
     //console.log("url.toString()")
     //const url = new URL("."+pathname, import.meta.url);
     //console.log(url.toString())
-    let result = "";
+    let textHtml = "";
     try{
       //                      "./app.js"      "file:///x:/projects/denopreactjs/dev.js"
       //const fileName = new URL("."+pathname, import.meta.url)
       //console.log("fileName: ", fileName.toString())
       //let textJSX = await Deno.readTextFile(fileName);
       const CWDFilePath = "."+pathname;
-      console.log("JSX-to-JS Path: ",CWDFilePath)
+      //console.log("JSX-to-JS Path: ",CWDFilePath)
       const textJSX = await Deno.readTextFile(CWDFilePath);
       //console.log(textJSX);
       //textJSX = textJSX.replace('/** @jsxRuntime classic */','')
       //textJSX = textJSX.replace('/** @jsx h */','/** @jsxImportSource https://esm.sh/preact */')
       //console.log(babelCore)
-      result = babelCore.transformSync(textJSX, {
+      const result = babelCore.transformSync(textJSX, {
         "presets": [
           //babelEnv,//fail not module
           presetReact
@@ -323,15 +300,22 @@ async function apiFetch(req) {
         "plugins": [transformReactJsx],
       });
       //console.log(result.code)
+      textHtml= result.code;
     }catch(e){
       console.log("ERROR?")
       console.log(e)
+      return new Response("Uh oh!!\n"+e.toString(), { status: 500 });
     }
-    return new Response(result.code,{ status:200, headers:{'Content-Type':'text/javascript'} });
+    return new Response(textHtml,{ status:200, headers:{'Content-Type':'text/javascript'} });
     //return new Response("Hello, World!",{headers:{'Content-Type':'text/javascript'} });
   }
   //if the url page is not found return simple text
-  return new Response("Hello, World!",{status:200,headers:{'Content-Type':'text/html'}});
+  //return new Response("Hello, World!",{status:200,headers:{'Content-Type':'text/html'}});
+  const response = new Response(undefined,{
+    status:302,
+    headers:{'location':"/"}
+  });
+  return response;
 }
 
 // this handle loading and unloading event serve
@@ -348,7 +332,7 @@ globalThis.addEventListener("unload", handler);
 globalThis.onload = async (e) => {
   //console.log(`got ${e.type} event in onload function (main)`);
   await initDB();
-  //testTables();
+  testTables();
 
   //basic set up server or serve http
   serve(apiFetch,{port:port});
