@@ -36,3 +36,29 @@ routeUrls.set(pageName,{
     //})
   //}
 ```
+
+```js
+const MapStateComponent = () => {
+  const [mapState, setMapState] = useState(new Map());
+
+  const updateMap = (key, value) => {
+    setMapState(map => new Map(map.set(key, value)));
+  }
+
+  // ...
+}
+```
+```js
+const updateNotify = (k,v) => {
+    setNotifies(new Map(notifies.set(k,v)));
+  }
+
+  const deleteNotify = (k) => {
+    console.log(k)
+    setNotifies(state=>{
+      const copy = new Map(state)
+      copy.delete(k)
+      return copy;
+    });
+  }
+```
