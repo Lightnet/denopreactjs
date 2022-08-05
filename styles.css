@@ -36,3 +36,19 @@ body {
   width:500px;
   height: 375px;
 }
+
+.info {
+  background-color: cornflowerblue;
+}
+
+.success {
+  background-color: chartreuse;
+}
+
+.error {
+  background-color: darkorange;
+}
+
+.warn {
+  background-color: lightcoral;
+}

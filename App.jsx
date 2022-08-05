@@ -27,10 +27,10 @@ export default function App(){
         <PageRoutes/>
         <PortalModal/>
         <NotifyManager/>
-        <PortalNotify/>
         <NotifyTest/>
+        <PortalNotify/>
       </NotifyProvider>
     </AuthProvider>
   </ThemeProvider>)
-  
 }
+// <NotifyManager/>

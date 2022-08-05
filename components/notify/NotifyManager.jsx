@@ -15,6 +15,8 @@ import {
  useEffect, 
  useContext } from 'preact/hooks';
 import { NotifyContext } from "./NotifyProvider.jsx"
+import NotifyContainer from "./NotifyContainer.jsx"
+import { createPortal } from 'preact/compat';
 
 export default function NotifyManager(props) {
   //const [notes, setNotes] = useState([]);
@@ -23,6 +25,7 @@ export default function NotifyManager(props) {
     setNotifies,
     notify
   } = useContext(NotifyContext);
+  const container = document.getElementById('notifies');
 
   const updateNotify = (k,v) => {
     setNotifies(new Map(notifies.set(k,v)));
@@ -38,41 +41,38 @@ export default function NotifyManager(props) {
   }
 
   useEffect(()=>{
-    //console.log("notify")
-    //console.log(crypto.randomUUID())
-    //console.log(notify)
+    //console.log("notify", notify)
     if(typeof notify?.message=='string'){
       console.log("processing...")
-      let color = "Info";
+      let color = "info";
       if(notify?.typ){
         color=notify.typ;
       }
-      //const _notes = notifies;
       updateNotify(crypto.randomUUID(),{
         color:color,
-        message:notify?.message+crypto.randomUUID(),
-        autoClose:true
+        message:notify?.message+crypto.randomUUID() || "None",
+        autoClose: notify?.autoClose || true,
+        closeTime: notify?.time || 5
       })
-      //console.log(_notes)
-      ///setNotifies(_notes)
-      //setNotify(null)
     }
   },[notify])
 
   function onDeleteId(id){
-    console.log(id)
+    //console.log(id)
     deleteNotify(id)
-    //const _notes = notifies;
-    //_notes.delete(id)
-    //setNotifies(_notes)
-    //console.log(notifies)
   }
 
   return (<div>
-    {[...notifies].map(item=><div key={item[0]}>
-      {/*console.log(item[1])*/}
-      <label>Name:{item[1].message}</label>
-      <button onClick={()=>onDeleteId(item[0])}> del </button>
-    </div>)}
+    {[...notifies].map(item=>
+
+    createPortal(<NotifyContainer key={item[0]} {...item[1]} onClose={()=>onDeleteId(item[0])}/>, container)
+    
+    )}
   </div>)
 }
+/*
+{[...notifies].map(item=><div key={item[0]}>
+  <label>Name:{item[1].message}</label>
+  <button onClick={()=>onDeleteId(item[0])}> del </button>
+</div>)}
+*/

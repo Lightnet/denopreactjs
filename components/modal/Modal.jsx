@@ -40,5 +40,4 @@ export default function Modal(props) {
 }
 /*
 <p> Content </p>
-
 */

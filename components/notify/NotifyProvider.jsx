@@ -17,6 +17,13 @@ import { isObjEmpty } from "../../libs/helper.js"
 
 export const NotifyContext = createContext({});
 
+export const NotifyColor={
+  info:"info",
+  success:"success",
+  error:"error",
+  warn:"warn",
+}
+
 export default function NotifyProvider(props) {
   const [notifies, setNotifies] = useState(new Map())
   const [notify, setNotify] = useState(null)

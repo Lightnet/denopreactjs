@@ -6,13 +6,11 @@
 
 /** @jsx h */
 import { h } from "preact"
-//import { useState } from 'preact/hooks';
 
 export default function PortalNotify(props) {
 
-  //const [isOpen, setIsOpen] = useState(false);
-  //useEffect(()=>{
-  //},[])
-
-  return (<div id="portalnotify"></div>)
+  return (<div id="notifies" style="position:fixed; float:right; top:0px;right:0px;">
+    
+  </div>)
 }
+//{[...notifies].map(item=><NotifyContainer key={item[0]} {...item[1]} onClose={()=>onDeleteId(item[0])}/>)}
