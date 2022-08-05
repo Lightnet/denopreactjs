@@ -17,8 +17,8 @@ import { route } from "preact-router";
 
 export default function SignOut(){
 
-  const { setUser, setUserInfo } = useContext(AuthContext);
-  const [alias, setAlias] = useState("");
+  const {setUser, setUserInfo } = useContext(AuthContext);
+  //const [alias, setAlias] = useState("");
 
   function btnSignOut(){
     //console.log("query")
@@ -32,11 +32,13 @@ export default function SignOut(){
         setUserInfo({})
         //setUser(response.data.user.alias)
         //console.log("USER NAME",response.data.user.alias)
-        setUser("Guest")
+        //setUser("Guest")
         route("/",true);
       }else{
         console.log("LOGIN ERROR")
       }
+    }).catch(err=>{
+      console.log(err)
     })
     
     /*

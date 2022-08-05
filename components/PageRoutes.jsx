@@ -11,7 +11,7 @@
 
 /** @jsx h */
 import { h } from "preact"
-import { useState, useEffect } from "preact/hooks"
+import { useState, useEffect } from "preact/hooks";
 import Router from 'preact-router';
 import AsyncRoute from 'preact-async-route';
 import Loading from "./Loading.jsx"

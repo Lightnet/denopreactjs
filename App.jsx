@@ -7,6 +7,7 @@
 /** @jsx h */
 import { h } from "preact"
 //import Button from "./components/Button.jsx";
+import PortalModal from "./components/modal/PortalModal.jsx"
 
 import AuthProvider from "./components/auth/AuthProvider.jsx"
 import AccessTopBar from "./components/AccessTopBar.jsx"
@@ -19,6 +20,7 @@ export default function App(){
     <AuthProvider>
       <AccessTopBar/>
       <PageRoutes/>
+      <PortalModal/>
     </AuthProvider>
   </ThemeProvider>)
   

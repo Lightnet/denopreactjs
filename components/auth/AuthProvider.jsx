@@ -13,6 +13,7 @@ import {
   useState, 
   useMemo 
 } from "preact/hooks"
+import { isObjEmpty } from "../../libs/helper.js"
 
 export const AuthContext = createContext({});
 
@@ -21,6 +22,18 @@ export default function AuthProvider(props) {
   const [userInfo, setUserInfo] = useState({})
   const [isLogin, setIsLogin] = useState(false)
 
+  useEffect(()=>{
+    if(!isObjEmpty(userInfo)){
+      if(userInfo.alias){
+        setUser(userInfo.alias)
+        setIsLogin(true)
+      }
+    }else{
+      setIsLogin(false)
+      setUser("Guest")
+    }
+  },[userInfo])
+
   const auth = useMemo(() => {
     return { 
       user, setUser,
@@ -28,10 +41,10 @@ export default function AuthProvider(props) {
       isLogin, setIsLogin
     }
   }, [
-      user, 
-      userInfo, 
-      isLogin
-    ])
+    user, 
+    userInfo, 
+    isLogin
+  ])
 
   return (
     <AuthContext.Provider value={auth}>

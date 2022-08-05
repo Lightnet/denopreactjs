@@ -21,6 +21,8 @@ import * as babelCore from "https://esm.sh/@babel/core";
 // babel-standalone
 import * as presetReact from "https://esm.sh/@babel/preset-react";
 import transformReactJsx from "https://esm.sh/@babel/plugin-transform-react-jsx";
+import chalk from "https://deno.land/x/chalk_deno@v4.1.1-deno/source/index.js"
+
 import { crypto } from "$std/crypto/mod.ts";
 import { 
   initDB
@@ -30,6 +32,11 @@ import {
   createJWT
 , verifyJWT 
 } from "./libs/serverapi.js"
+
+const log = console.log;
+//console.log(chalk.blue('Hello world!'));
+console.log(chalk.green('Hello world!'));
+//log(chalk.blue.bgRed.bold('Hello world!'));
 
 //console.log(crypto.randomUUID())
 //console.log(Deno)
