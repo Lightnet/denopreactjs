@@ -19,7 +19,6 @@ export default function NotifyTest(props) {
   } = useContext(NotifyContext);
 
   function NotifyInfo(){
-    //console.log("TESTing...")
     setNotify({
       typ:NotifyColor.info,
       message:"test"
@@ -27,7 +26,6 @@ export default function NotifyTest(props) {
   }
 
   function NotifySuccess(){
-    //console.log("TESTing...")
     setNotify({
       typ:NotifyColor.success,
       message:"test"
@@ -35,7 +33,6 @@ export default function NotifyTest(props) {
   }
 
   function NotifyError(){
-    //console.log("TESTing...")
     setNotify({
       typ:NotifyColor.error,
       message:"test"
@@ -43,9 +40,16 @@ export default function NotifyTest(props) {
   }
 
   function NotifyWarn(){
-    //console.log("TESTing...")
     setNotify({
       typ:NotifyColor.warn,
+      message:"test"
+    })
+  }
+
+  function NotifyWarnOff(){
+    setNotify({
+      typ:NotifyColor.warn,
+      autoClose:false,
       message:"test"
     })
   }
@@ -55,5 +59,7 @@ export default function NotifyTest(props) {
     <button onClick={NotifySuccess}> Notify Success Test </button>
     <button onClick={NotifyError}> Notify Error Test </button>
     <button onClick={NotifyWarn}> Notify Warn Test </button>
+
+    <button onClick={NotifyWarnOff}> Notify Warn Test Off </button>
   </div>)
 }

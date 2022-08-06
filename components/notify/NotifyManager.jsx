@@ -32,7 +32,7 @@ export default function NotifyManager(props) {
   }
 
   const deleteNotify = (k) => {
-    console.log(k)
+    //console.log(k)
     setNotifies(state=>{
       const copy = new Map(state)
       copy.delete(k)
@@ -41,14 +41,19 @@ export default function NotifyManager(props) {
   }
 
   useEffect(()=>{
-    //console.log("notify", notify)
+    console.log("notify", notify)
     if(typeof notify?.message=='string'){
-      console.log("processing...")
+      //console.log("processing...")
+      let autoClose=true;
+      if(typeof notify.autoClose == 'boolean'){
+        autoClose=notify.autoClose;
+      }
 
+      console.log(notify.autoClose)
       updateNotify(crypto.randomUUID(),{
         color:notify?.typ || "info",
         message:notify?.message+crypto.randomUUID() || "None",
-        autoClose: notify?.autoClose || true,
+        autoClose: autoClose,
         closeTime: notify?.time || 5
       })
     }

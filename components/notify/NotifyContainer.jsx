@@ -4,6 +4,7 @@
   Created By: Lightnet
 */
 // https://codepen.io/kick-your-ass/pen/pqmjQG
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
 
 /** @jsx h */
 import { h } from "preact"
@@ -15,30 +16,48 @@ export default function NotifyContainer(props) {
   const [slide, setSlide] = useState("side_ROut")
 
   useEffect(()=>{
-    console.log(props)
+    //console.log(props)
     setSlide("slide_RIn")
-    const myTimeout0 = setTimeout(()=>{closeAnimation()}, 3000);
+    
+    let autoClose =true;
+    let myTimeout0;
+    let myTimeout;
+    if(typeof props.autoClose == 'boolean'){
+      autoClose= props.autoClose;
+    }
 
-    const myTimeout = setTimeout(()=>{onclose()}, 5000);
+    if(autoClose){
+      myTimeout0 = setTimeout(()=>{closeAnimation()}, 3000);
+      myTimeout = setTimeout(()=>{onclose()}, 5000);
+    }
 
     return ()=>{
-      clearTimeout(myTimeout0);
-      clearTimeout(myTimeout);
+      if(autoClose){
+        clearTimeout(myTimeout0);
+        clearTimeout(myTimeout);
+      }
     }
   },[])
 
   function closeAnimation(){
     setSlide("side_ROut");
+    //setTimeout(()=>{onclose()}, 2000);
   }
 
   function onclose(){
     if(typeof props.onClose == 'function'){
-      props.onClose();
+      setSlide("side_ROut");
+      //props.onClose();
+      if(props.autoClose==false){
+        setTimeout(()=>{props.onClose()}, 2000);
+      }else{
+        props.onClose();
+      }
     }
   }
 
   return (<div class={props.color + " " + slide}>
-    <label>Name:{props.message}</label>
+    <label>{props.message}</label>
     <button onClick={()=>onclose()}> x </button>
   </div>)
 }
