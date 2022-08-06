@@ -22,26 +22,61 @@ export default function Modal(props) {
 
   const [isOpen, setIsOpen] = useState(false);
   
-  const [width, setWidth] = useState(props.width || 200);
-  const [height, setHeight] = useState(props.width || 100);
+  const [width, setWidth] = useState(Number(props.width) || 200);
+  const [height, setHeight] = useState(Number(props.height) || 100);
 
   const ref = createRef();
 
   const [offSet, setOffSet] = useState({x:0,y:0});
-  const [initial, setInitial] = useState({x:0,y:0});
   const [translate, setTranslate] = useState({x:0,y:0});
   const [isDrag, setIsDrag] = useState(false);
+  const [enableDrag, setEnableDrag] = useState(props.enabledrag ||false);
+
+  //useEffect(()=>{
+    //console.log("props?.width: ",props?.width)
+    //console.log("typeof width: ", typeof props?.width)
+    //if(typeof props?.width==='string'){// <Modal isShow={isShowModal} onClose={onClose} enabledrag>
+      //setWidth(Number(props.width));
+    //}
+  //},[props?.width])
+
+  //useEffect(()=>{
+    //console.log("props?.height: ",props?.height)
+    //console.log("typeof height: ", typeof props?.height)
+    //if(typeof props?.height==='string'){// <Modal isShow={isShowModal} onClose={onClose} enabledrag>
+      //setHeight(Number(props.height));
+    //}
+  //},[props?.height])
+
+  //useEffect(()=>{
+    //if(typeof props?.enabledrag==='boolean'){// <Modal isShow={isShowModal} onClose={onClose} enabledrag>
+      //setEnableDrag(props.enabledrag);
+    //}
+  //},[props?.enabledrag])
 
   useEffect(()=>{
-    console.log(width);
-    console.log(ref)
+    //console.log(width);
+    //console.log(height);
+    //console.log(ref)
+    if(typeof document === 'undefined'){
+      return;
+    }
+
+    //console.log(document.body.clientWidth)
+    //console.log(document.body.clientHeight)
+    //console.log(ref)
+    setTranslate({
+      x: (document.body.clientWidth / 2) - (width/2)
+     , y: (document.body.clientHeight / 2) - (height/2)
+    })
+
     return ()=>{//clean up
 
     }
   },[])
 
   useEffect(()=>{
-    console.log(width);
+    //console.log(width);
     //console.log(props.isShow)
     if(typeof props.isShow == 'boolean'){
       setIsOpen(props.isShow)
@@ -55,9 +90,10 @@ export default function Modal(props) {
   }
 
   function MouseDown(event){
+    if(!enableDrag){return;}
     //event.stopPropogation()
     //event.preventDefault()
-    console.log(ref)
+    //console.log(ref)
     event = event || window.event;
 
     const {scrollLeft, scrollTop, clientLeft, clientTop} = document.body;
@@ -68,51 +104,35 @@ export default function Modal(props) {
       , y: event.pageY - (top + scrollTop - clientTop)
     })
 
-    //setOffSet({x: event.offsetX, y: event.offsetY})
-    //setInitial({
-      //x: event.offsetX, 
-      //y: event.offsetY
-    //});
     setIsDrag(true);
   }
 
   function MouseMove(event){
+    if(!enableDrag){return;}
     if(isDrag){
       //event.stopPropogation()
       //event.preventDefault()
-      console.log("move?")
+      //console.log("move?")
       event = event || window.event;
       setTranslate({
         x: event.pageX - offSet.x,
         y: event.pageY - offSet.y
       })
-
-      //setTranslate({
-        //x: initial.x - event.movementX,
-        //y: initial.y - event.movementY
-      //})
-      //console.log(ref)
-      console.log(translate);
+      //console.log(translate);
     }
   }
 
   function MouseUp(e){
+    if(!enableDrag){return;}
     //event.stopPropogation()
     //event.preventDefault()
-    console.log(ref)
-    console.log("UP MOUSE")
-    //if(ref.current){
-      //ref.current.removeEventListener('mousemove',MouseMove)
-    //}
     setIsDrag(false);
   }
 
   function MouseOut(event){
-    console.log(ref)
-    console.log("OUT MOUSE")
+    if(!enableDrag){return;}
     //event.stopPropogation()
     event.preventDefault()
-
     setIsDrag(false);
   }
 
@@ -124,7 +144,6 @@ export default function Modal(props) {
     ref={ref} 
     class="modal" 
     style={`position:absolute; width:${width}px; height:${height}px; left:${translate.x}px; top:${translate.y}px;`}
-
       >
     <div class="modal_header" onMouseDown={MouseDown} onMouseUp={MouseUp} onMouseMove={MouseMove} onMouseOut={MouseOut}>
       <label>Modal</label>

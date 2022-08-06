@@ -11,11 +11,11 @@
 /** @jsx h */
 import { h } from "preact"
 import { 
- useState,
+// useState,
  useEffect, 
  useContext } from 'preact/hooks';
 import { NotifyContext } from "./NotifyProvider.jsx"
-import NotifyContainer from "./NotifyContainer.jsx"
+//import NotifyContainer from "./NotifyContainer.jsx"
 //import { createPortal } from 'preact/compat';
 
 export default function NotifyManager(props) {
@@ -25,12 +25,13 @@ export default function NotifyManager(props) {
     setNotifies,
     notify
   } = useContext(NotifyContext);
-  const container = document.getElementById('notifies');
+  //const container = document.getElementById('notifies');
 
   const updateNotify = (k,v) => {
     setNotifies(new Map(notifies.set(k,v)));
   }
 
+  /*
   const deleteNotify = (k) => {
     //console.log(k)
     setNotifies(state=>{
@@ -39,9 +40,10 @@ export default function NotifyManager(props) {
       return copy;
     });
   }
+  */
 
   useEffect(()=>{
-    console.log("notify", notify)
+    //console.log("notify", notify)
     if(typeof notify?.message=='string'){
       //console.log("processing...")
       let autoClose=true;
@@ -59,10 +61,10 @@ export default function NotifyManager(props) {
     }
   },[notify])
 
-  function onDeleteId(id){
+  //function onDeleteId(id){
     //console.log(id)
-    deleteNotify(id)
-  }
+    //deleteNotify(id)
+  //}
 
   return (<div>
     {/*[...notifies].map(item=>

@@ -16,9 +16,14 @@ html[data-theme='dark'] {
   --link-color: #828fff;
 }
 
+html{
+  height:100%;
+}
+
 body {
   margin: 0;
   padding: 0;
+  height:100%;
   background: var(--background-color);
   color: var(--text-color);
 }

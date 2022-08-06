@@ -42,7 +42,7 @@ export default function TestLab(){
     <NotifyTest/><br/>
     <br/>
     <button onClick={clickOpen}>Modal</button>
-    {createPortal(<Modal isShow={isShowModal} onClose={onClose}>
+    {createPortal(<Modal width="200" isShow={isShowModal} onClose={onClose} enabledrag>
       <label>{message}</label> <button onClick={onClose}> x </button>
     </Modal>, container)}
 
