@@ -52,3 +52,15 @@ body {
 .warn {
   background-color: lightcoral;
 }
+
+.slide_RIn{
+  position: relative;
+  right: 0px;
+  transition: 0.5s;
+}
+
+.side_ROut{
+  position: relative;
+  right: -100%;
+  transition: 2s;
+}
