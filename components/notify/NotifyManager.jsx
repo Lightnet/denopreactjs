@@ -16,7 +16,7 @@ import {
  useContext } from 'preact/hooks';
 import { NotifyContext } from "./NotifyProvider.jsx"
 import NotifyContainer from "./NotifyContainer.jsx"
-import { createPortal } from 'preact/compat';
+//import { createPortal } from 'preact/compat';
 
 export default function NotifyManager(props) {
   //const [notes, setNotes] = useState([]);
@@ -44,12 +44,9 @@ export default function NotifyManager(props) {
     //console.log("notify", notify)
     if(typeof notify?.message=='string'){
       console.log("processing...")
-      let color = "info";
-      if(notify?.typ){
-        color=notify.typ;
-      }
+
       updateNotify(crypto.randomUUID(),{
-        color:color,
+        color:notify?.typ || "info",
         message:notify?.message+crypto.randomUUID() || "None",
         autoClose: notify?.autoClose || true,
         closeTime: notify?.time || 5
@@ -63,14 +60,16 @@ export default function NotifyManager(props) {
   }
 
   return (<div>
-    {[...notifies].map(item=>
+    {/*[...notifies].map(item=>
 
     createPortal(<NotifyContainer key={item[0]} {...item[1]} onClose={()=>onDeleteId(item[0])}/>, container)
     
-    )}
+    )*/}
   </div>)
 }
 /*
+createPortal(<NotifyContainer key={item[0]} {...item[1]} onClose={()=>onDeleteId(item[0])}/>, container)//not possible
+
 {[...notifies].map(item=><div key={item[0]}>
   <label>Name:{item[1].message}</label>
   <button onClick={()=>onDeleteId(item[0])}> del </button>

@@ -12,7 +12,7 @@ import { useState, useEffect, useContext } from "preact/hooks"
 import { Link } from 'preact-router';
 import { AuthContext } from "./auth/AuthProvider.jsx"
 import { isObjEmpty } from "../libs/helper.js"
-import ToggleTheme from "/components/theme/ToggleTheme.jsx";
+import ToggleTheme from "./theme/ToggleTheme.jsx";
 
 export default function AccessTopBar(){
 
@@ -45,6 +45,7 @@ export default function AccessTopBar(){
         <Link href="/signup">Sign Up</Link><span> | </span>
       </Fragment>
     )}
+    <Link href="/testlab">Test Lab</Link><span> | </span>
     <Link href="/settings">Settings</Link> <span> | </span>
     <ToggleTheme/> <span> | </span>
   </div>)

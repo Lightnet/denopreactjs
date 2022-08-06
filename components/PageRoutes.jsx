@@ -70,6 +70,12 @@ export default function PageRoutes(){
       getComponent={() => import("./pages/ToDoList.jsx").then(module => module.default)}
       loading={()=>{return <Loading/>}}
     />
+
+    <AsyncRoute
+      path="/testlab"
+      getComponent={() => import("./pages/TestLab.jsx").then(module => module.default)}
+      loading={()=>{return <Loading/>}}
+    />
     
     <Home default />
   </Router>)

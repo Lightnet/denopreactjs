@@ -16,7 +16,7 @@ import ThemeProvider from "./components/theme/ThemeProvider.jsx"
 import NotifyProvider from "./components/notify/NotifyProvider.jsx"
 import PortalNotify from "./components/notify/PortalNotify.jsx"
 import NotifyManager from "./components/notify/NotifyManager.jsx"
-import NotifyTest from "./components/notify/NotifyTest.jsx"
+
 
 export default function App(){
 
@@ -27,7 +27,6 @@ export default function App(){
         <PageRoutes/>
         <PortalModal/>
         <NotifyManager/>
-        <NotifyTest/>
         <PortalNotify/>
       </NotifyProvider>
     </AuthProvider>
