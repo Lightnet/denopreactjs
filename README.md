@@ -38,26 +38,38 @@ Run the server command.
   - [ ] custom
   - [ ] ...
 
-- [x] Account
+- [ ] UI
+  - [ ] button
+  - [ ] dialog box
+  - [ ] notification browser
+  - [ ] color light
+  - [ ] color dark
+
+- [ ] Account
   - [x] sign in 
   - [x] sign up 
   - [x] sign out 
   - [ ] forgot 
   - [x] JWT cookie
+  - [ ] permissions 
 
-- [x] Notify
+- [ ] Admin
+  - [ ] permissions 
+  - [ ] layout
+
+- [ ] Notify
   - [x] container (display list)
   - [x] style (simple)
   - [ ] anchor
     - [x] Top Right
 
-- [x] Modal
+- [ ] Modal
   - [x] dialog box
   - [x] dragging
   - [x] size
   - [x] onClose event
 
-- [x] todolist
+- [ ] todolist
   - [x] create
   - [x] update
   - [x] delete
@@ -80,7 +92,6 @@ Run the server command.
   - [ ] layout
   - [ ] loading
   - [ ] reload
-
 
 
 # Preactjs:

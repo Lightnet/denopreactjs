@@ -85,8 +85,19 @@ body {
   /*background:none !important;*/
 }
 
+.modal_header button{
+  background-color: aliceblue;
+  border: 0px;
+  padding: 0px 2px 0px 2px;
+}
+
+.modal_header button:hover{
+  background-color: darkgray;
+}
+
 .modal_header {
   background-color: #212a2e;
+  padding: 0px 2px 0px 2px;
   color: beige;
 }
 

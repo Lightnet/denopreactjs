@@ -4,6 +4,7 @@
   Created By: Lightnet
 */
 
+/** @jsxRuntime classic */
 /** @jsx h */
 import { h } from "preact"
 //import { useState } from 'preact/hooks';

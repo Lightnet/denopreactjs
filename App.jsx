@@ -17,7 +17,6 @@ import NotifyProvider from "./components/notify/NotifyProvider.jsx"
 import PortalNotify from "./components/notify/PortalNotify.jsx"
 import NotifyManager from "./components/notify/NotifyManager.jsx"
 
-
 export default function App(){
 
   return (<ThemeProvider>

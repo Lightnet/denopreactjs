@@ -6,6 +6,7 @@
   browser client
 */
 
+/** @jsxRuntime classic */
 /** @jsx h */
 import { h, createContext } from "preact"
 import { 

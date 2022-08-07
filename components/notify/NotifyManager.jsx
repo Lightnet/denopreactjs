@@ -8,6 +8,7 @@
 // https://medium.com/swlh/using-es6-map-with-react-state-hooks-800b91eedd5f
 // https://usehooks-ts.com/react-hook/use-map
 
+/** @jsxRuntime classic */
 /** @jsx h */
 import { h } from "preact"
 import { 

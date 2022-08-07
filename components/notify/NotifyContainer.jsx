@@ -6,6 +6,7 @@
 // https://codepen.io/kick-your-ass/pen/pqmjQG
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
 
+/** @jsxRuntime classic */
 /** @jsx h */
 import { h } from "preact"
 import { useState, useEffect } from 'preact/hooks';

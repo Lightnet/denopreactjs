@@ -18,6 +18,9 @@ import DisplayUser from "../auth/DisplayUser.jsx"
 import NotifyTest from "../notify/NotifyTest.jsx"
 import Modal from "../modal/Modal.jsx";
 
+import ButtonFetch from "../utilities/ButtonFetch.jsx"
+import ButtonTimer from "../utilities/ButtonTimer.jsx"
+
 export default function TestLab(){
 
 
@@ -40,7 +43,8 @@ export default function TestLab(){
   return (<div>
     <DisplayUser/><br/>
     <NotifyTest/><br/>
-    <br/>
+    <ButtonFetch/><br/>
+    <ButtonTimer/><br/>
     <button onClick={clickOpen}>Modal</button>
     {createPortal(<Modal width="200" isShow={isShowModal} onClose={onClose} enabledrag>
       <label>{message}</label> <button onClick={onClose}> x </button>
