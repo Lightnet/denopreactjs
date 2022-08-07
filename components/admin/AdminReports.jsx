@@ -16,9 +16,9 @@ import {
 } from "preact/hooks"
 import { isObjEmpty } from "../../libs/helper.js"
 
-export default function Settings(props) {
+export default function Reports(props) {
 
   return (<div>
-    <label>Settings</label>
+    <label>Reports</label>
   </div>)
 }

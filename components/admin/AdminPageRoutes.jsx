@@ -37,6 +37,36 @@ export default function AdminPageRoutes(props) {
       getComponent={() => import("./AdminSignin.jsx").then(module => module.default)}
       loading={()=>{return <Loading/>}}
     />
+
+    <AsyncRoute
+      path="/permissions"
+      getComponent={() => import("./AdminPermissions.jsx").then(module => module.default)}
+      loading={()=>{return <Loading/>}}
+    />
+
+    <AsyncRoute
+      path="/bans"
+      getComponent={() => import("./AdminBans.jsx").then(module => module.default)}
+      loading={()=>{return <Loading/>}}
+    />
+
+    <AsyncRoute
+      path="/reports"
+      getComponent={() => import("./AdminReports.jsx").then(module => module.default)}
+      loading={()=>{return <Loading/>}}
+    />
+
+    <AsyncRoute
+      path="/logs"
+      getComponent={() => import("./AdminLogs.jsx").then(module => module.default)}
+      loading={()=>{return <Loading/>}}
+    />
+
+    <AsyncRoute
+      path="/signout"
+      getComponent={() => import("./AdminSignout.jsx").then(module => module.default)}
+      loading={()=>{return <Loading/>}}
+    />
   </Router>)
 }
 /*
