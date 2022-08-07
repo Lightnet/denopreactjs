@@ -20,7 +20,7 @@ import Modal from "../modal/Modal.jsx";
 
 import ButtonFetch from "../utilities/ButtonFetch.jsx"
 import ButtonTimer from "../utilities/ButtonTimer.jsx"
-import BulletinboardSlide from "../sliders/BulletinboardSlide.jsx"
+import BulletinBoardSlide from "../sliders/BulletinBoardSlide.jsx"
 
 export default function TestLab(){
 
@@ -48,7 +48,7 @@ export default function TestLab(){
     <ButtonTimer/><br/>
     <button onClick={clickOpen}>Modal</button><br/>
 
-    <BulletinboardSlide/><br/>
+    <BulletinBoardSlide/><br/>
 
 
     {createPortal(<Modal width="200" isShow={isShowModal} onClose={onClose} enabledrag>
