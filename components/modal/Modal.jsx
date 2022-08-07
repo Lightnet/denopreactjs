@@ -67,7 +67,9 @@ export default function Modal(props) {
     //console.log(ref)
     setTranslate({
       x: (document.body.clientWidth / 2) - (width/2)
-     , y: (document.body.clientHeight / 2) - (height/2)
+     //, y: (document.body.clientHeight / 2) - (height/2)
+     //, y: (height/2)
+     , y: 20
     })
 
     return ()=>{//clean up

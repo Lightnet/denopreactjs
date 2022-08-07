@@ -14,19 +14,25 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import { AuthContext } from "./AuthProvider.jsx";
 import { axiosapi } from "../../libs/clientapi.js";
 import { route } from "preact-router";
-import { createPortal } from 'preact/compat';
-import Modal from "../modal/Modal.jsx";
+//import { createPortal } from 'preact/compat';
+//import Modal from "../modal/Modal.jsx";
+import { NotifyContext, NotifyColor } from "../notify/NotifyProvider.jsx"
 
 export default function ELogin(){
-  const { setUser, setUserInfo } = useContext(AuthContext);
 
+  const { setUser, setUserInfo } = useContext(AuthContext);
   const [alias, setAlias] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [email, setEmail] = useState("");
   const container = document.getElementById('modals');
 
-  const [message, setMessage]= useState("");
-  const [isShowModal, setIsShowModal] = useState(false);
+  //const [message, setMessage]= useState("");
+  //const [isShowModal, setIsShowModal] = useState(false);
+  const { 
+    //notifies,
+    //setNotifies,
+    setNotify
+  } = useContext(NotifyContext);
 
   function onClose(){
     setIsShowModal(false);
@@ -61,14 +67,26 @@ export default function ELogin(){
           //console.log("USER NAME",response.data.user.alias)
           setUserInfo(response.data.user)
           //setUser(response.data.user.alias)
+          setNotify({
+            typ:NotifyColor.success,
+            message:"Login Successful!"
+          })
           route("/",true);
         }else if(response.data?.api=="FAIL"){
-          setMessage("Access Denied");
-          clickOpen()
+          //setMessage("Access Denied");
+          //clickOpen()
+          setNotify({
+            typ:NotifyColor.warn,
+            message:"Invalid Alias/Password !"
+          })
         }else {
-          setMessage("ERROR");
-          clickOpen()
-          console.log("LOGIN ERROR")
+          //setMessage("ERROR");
+          //clickOpen()
+          //console.log("LOGIN ERROR")
+          setNotify({
+            typ:NotifyColor.error,
+            message:"Sign in error!"
+          })
         }
       }
     }).catch(err=>{
@@ -113,9 +131,11 @@ export default function ELogin(){
       </tbody>
     </table>
     
-    {createPortal(<Modal isShow={isShowModal} onClose={onClose}>
+    {/*
+    createPortal(<Modal isShow={isShowModal} onClose={onClose}>
       <label>{message}</label> <button onClick={onClose}> x </button>
-    </Modal>, container)}
+    </Modal>, container)
+    */}
 
     {/* comments
     <button onClick={clickOpen}>Modal</button>

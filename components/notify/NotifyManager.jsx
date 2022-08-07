@@ -51,10 +51,11 @@ export default function NotifyManager(props) {
         autoClose=notify.autoClose;
       }
 
-      console.log(notify.autoClose)
+      //console.log(notify.autoClose)
       updateNotify(crypto.randomUUID(),{
         color:notify?.typ || "info",
-        message:notify?.message+crypto.randomUUID() || "None",
+        //message:notify?.message+crypto.randomUUID() || "None",
+        message:notify?.message || "None",
         autoClose: autoClose,
         closeTime: notify?.time || 5
       })

@@ -14,11 +14,18 @@ import { useState, useContext } from "preact/hooks"
 import { AuthContext } from "./AuthProvider.jsx";
 import { axiosapi } from "../../libs/clientapi.js";
 import { route } from "preact-router";
+import { NotifyContext, NotifyColor } from "../notify/NotifyProvider.jsx"
 
 export default function SignOut(){
 
   const {setUser, setUserInfo } = useContext(AuthContext);
   //const [alias, setAlias] = useState("");
+
+  const { 
+    //notifies,
+    //setNotifies,
+    setNotify
+  } = useContext(NotifyContext);
 
   function btnSignOut(){
     //console.log("query")
@@ -33,9 +40,17 @@ export default function SignOut(){
         //setUser(response.data.user.alias)
         //console.log("USER NAME",response.data.user.alias)
         //setUser("Guest")
+        setNotify({
+          typ:NotifyColor.success,
+          message:"Sign Out Successful!"
+        })
         route("/",true);
       }else{
         console.log("LOGIN ERROR")
+        setNotify({
+          typ:NotifyColor.error,
+          message:"Sign Out Error!"
+        })
       }
     }).catch(err=>{
       console.log(err)

@@ -10,16 +10,22 @@
 
 /** @jsx h */
 import { h } from "preact"
-import { useState } from "preact/hooks"
-import { AuthContext } from "./AuthProvider.jsx";
+import { useState, useContext } from "preact/hooks"
+//import { AuthContext } from "./AuthProvider.jsx";
 import { axiosapi } from "../../libs/clientapi.js";
 import { route } from "preact-router";
+import { NotifyContext, NotifyColor } from "../notify/NotifyProvider.jsx"
 
 export default function ELogin(){
 
   const [alias, setAlias] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [email, setEmail] = useState("");
+  const { 
+    //notifies,
+    //setNotifies,
+    setNotify
+  } = useContext(NotifyContext);
 
   function inputAlias(event){
     //console.log(event.target.value)
@@ -42,10 +48,18 @@ export default function ELogin(){
         if(response.data?.api==="CREATE"){
           console.log(response.data)
           //route("/",true);
+          setNotify({
+            typ:NotifyColor.success,
+            message:"Create Successful!"
+          })
         }
         if(response.data?.api==="EXIST"){
           console.log(response.data)
           //route("/",true);
+          setNotify({
+            typ:NotifyColor.warn,
+            message:"Alias Exist!"
+          })
         }
       }
     }).catch(err=>{
