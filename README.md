@@ -30,6 +30,59 @@ deno task dev
 ```
 Run the server command.
 
+## Features:
+  Note working on simple functions for testing.
+- [ ] theme
+  - [x] light
+  - [x] dark
+  - [ ] custom
+  - [ ] ...
+
+- [x] Account
+  - [x] sign in 
+  - [x] sign up 
+  - [x] sign out 
+  - [ ] forgot 
+  - [x] JWT cookie
+
+- [x] Notify
+  - [x] container (display list)
+  - [x] style (simple)
+  - [ ] anchor
+    - [x] Top Right
+
+- [x] Modal
+  - [x] dialog box
+  - [x] dragging
+  - [x] size
+  - [x] onClose event
+
+- [x] todolist
+  - [x] create
+  - [x] update
+  - [x] delete
+  - [ ] layout
+
+- [ ] routes ( folder )
+  - [x] checks for function and AsnycFunction
+  - [x] jsx to js for browser
+  - [x] support jsx file
+  - [ ] params like get localhost/db?foo=bar
+  - [ ] name param like [name].js > localhost/name
+  - [ ] layout
+  - [ ] loading
+  - [ ] reload
+
+- [ ] routes/api (folder)
+  - [x] checks for function and AsnycFunction
+  - [x] checks for js file ext
+  - [ ] checks for ts file ext
+  - [ ] layout
+  - [ ] loading
+  - [ ] reload
+
+
+
 # Preactjs:
 - https://babeljs.io/docs/en/babel-preset-react
 - https://babeljs.io/docs/en/babel-plugin-transform-react-jsx
