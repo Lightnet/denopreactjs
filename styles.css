@@ -119,3 +119,21 @@ body {
   right: -100%;
   transition: 0.5s;
 }
+
+.slideBoard_LOut{
+  position: relative;
+  right: 100%;
+  transition: 0.5s;
+}
+
+.leftSideBar_Out{
+  /*position: relative;*/
+  left: calc(100% * -1) !important;
+  transition: 0.5s;
+}
+
+.leftSideBar_In{
+  /*position: relative;*/
+  left: 0 !important;
+  transition: 0.5s;
+}
