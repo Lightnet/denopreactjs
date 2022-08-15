@@ -15,13 +15,6 @@ import {useState,useEffect} from "preact/hooks"
 //import PageButton from "../components/PageButton.jsx";
 import * as THREE from "https://unpkg.com/three@0.143.0/build/three.module.js";
 
-//for server
-//export function handle(req){
-  //return new Response("Hello, World!",{status:200,headers:{'Content-Type':'text/html'}});
-//}
-
-
-
 function Threejs() {
 
   useEffect(()=>{
