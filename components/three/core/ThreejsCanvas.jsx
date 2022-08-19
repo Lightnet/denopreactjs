@@ -17,33 +17,36 @@ const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 /** @jsx h */
 
 import { h, Fragment, createRef } from "preact"
-import { useState, useEffect} from "preact/hooks"
+import { useState, useEffect, useContext} from "preact/hooks"
 //import PageButton from "../components/PageButton.jsx";
 import * as THREE from "https://unpkg.com/three@0.143.0/build/three.module.js";
-
+import { ThreejsContext } from "./ThreejsProvider.jsx";
 
 function ThreejsCanvas(props) {
 
   const ref = createRef();
+  const {addReRender} = useContext(ThreejsContext)
 
   const [scene, setScene] = useState(null);
   const [camera, setCamera] = useState(null);
   const [renderer, setRenderer] = useState(null);
   const [divID, setDivID] = useState(crypto.randomUUID());
 
-  const [cube, setCube] = useState(null);
+  //const [cube, setCube] = useState(null);
 
   useEffect(()=>{
     //console.log(props)
+    console.log("init threejs canvas")
     Init();
     return ()=>{//clean up
       console.log("CLEAN UP")
-      window.removeEventListener("resize", windowResize)
+      cleanUpEvents();
     }
   },[])
 
   useEffect(()=>{
     if(renderer){//does need to check if variable is set to start else null on loop frame
+      addReRender(divID,renderer,scene,camera,true)
       animate();
       setupEvents();''
     }
@@ -57,10 +60,10 @@ function ThreejsCanvas(props) {
     const _renderer = new THREE.WebGLRenderer({canvas:ref.current});
     _renderer.setSize( window.innerWidth, window.innerHeight );
 
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    const _cube = new THREE.Mesh( geometry, material );
-    _scene.add( _cube );
+    //const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    //const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    //const _cube = new THREE.Mesh( geometry, material );
+    //_scene.add( _cube );
     _camera.position.z = 5;
 
     //const idtag = document.getElementById("threejs")
@@ -68,8 +71,8 @@ function ThreejsCanvas(props) {
 
     setScene(_scene)
     setCamera(_camera)
+    //setCube(_cube)
     setRenderer(_renderer)
-    setCube(_cube)
 
     console.log("init threejs")
     //console.log(ref)
@@ -77,6 +80,10 @@ function ThreejsCanvas(props) {
 
   function setupEvents(){
     window.addEventListener("resize", windowResize)
+  }
+
+  function cleanUpEvents(){
+    window.removeEventListener("resize", windowResize)
   }
 
   function animate() {
@@ -87,13 +94,13 @@ function ThreejsCanvas(props) {
     }
     
     renderer.render( scene, camera );
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    //cube.rotation.x += 0.01;
+    //cube.rotation.y += 0.01;
     renderer.render( scene, camera );
   }
 
   function windowResize(){
-    console.log("resize")
+    //console.log("resize")
     //console.log(renderer)
     if(renderer){
       renderer.setSize( window.innerWidth, window.innerHeight );
